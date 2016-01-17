@@ -1,0 +1,963 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="FMDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="使用FMDB实现iOS数据库增删改查
+什么是FMDB大家都知道，iOS系统使用的是嵌入式数据库sqlite实现数据的管理，并且iOS的官方已经把API写好，作为开发者，我们只需要调用API就能实现数据库的建立，增删改查等功能。
+但是，官方给的API是用C语言写的，用起来总感觉有点不方便，并且官方的API也没有针对多线程进行优化。也就是说，如果你使用原生的API建立数据库，又不进行多线程保护，就会产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FMDB简单使用">
+<meta property="og:url" content="http://www.cocoadc.com/2015/12/12/FMDB简单使用/index.html">
+<meta property="og:site_name" content="enoughpower">
+<meta property="og:description" content="使用FMDB实现iOS数据库增删改查
+什么是FMDB大家都知道，iOS系统使用的是嵌入式数据库sqlite实现数据的管理，并且iOS的官方已经把API写好，作为开发者，我们只需要调用API就能实现数据库的建立，增删改查等功能。
+但是，官方给的API是用C语言写的，用起来总感觉有点不方便，并且官方的API也没有针对多线程进行优化。也就是说，如果你使用原生的API建立数据库，又不进行多线程保护，就会产">
+<meta property="og:image" content="http://ac-wb1gjktg.clouddn.com/fa3d0689ea219952.jpg">
+<meta property="og:updated_time" content="2016-01-16T15:24:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FMDB简单使用">
+<meta name="twitter:description" content="使用FMDB实现iOS数据库增删改查
+什么是FMDB大家都知道，iOS系统使用的是嵌入式数据库sqlite实现数据的管理，并且iOS的官方已经把API写好，作为开发者，我们只需要调用API就能实现数据库的建立，增删改查等功能。
+但是，官方给的API是用C语言写的，用起来总感觉有点不方便，并且官方的API也没有针对多线程进行优化。也就是说，如果你使用原生的API建立数据库，又不进行多线程保护，就会产">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> FMDB简单使用 | enoughpower </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?3f38fcfd891c0d328d8a5701a82e8e7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">enoughpower</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', '8YvRp2Gff5ewEvyqzmjW','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                FMDB简单使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-12-12T00:43:25+08:00" content="2015-12-12">
+              2015-12-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/12/FMDB简单使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/12/FMDB简单使用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/12/12/FMDB简单使用/" class="leancloud_visitors" data-flag-title="FMDB简单使用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="u4F7F_u7528FMDB_u5B9E_u73B0iOS_u6570_u636E_u5E93_u589E_u5220_u6539_u67E5"><a href="#u4F7F_u7528FMDB_u5B9E_u73B0iOS_u6570_u636E_u5E93_u589E_u5220_u6539_u67E5" class="headerlink" title="使用FMDB实现iOS数据库增删改查"></a>使用FMDB实现iOS数据库增删改查</h1><p><img src="http://ac-wb1gjktg.clouddn.com/fa3d0689ea219952.jpg" alt=""></p>
+<h2 id="u4EC0_u4E48_u662FFMDB"><a href="#u4EC0_u4E48_u662FFMDB" class="headerlink" title="什么是FMDB"></a>什么是FMDB</h2><p>大家都知道，iOS系统使用的是嵌入式数据库sqlite实现数据的管理，并且iOS的官方已经把API写好，作为开发者，我们只需要调用API就能实现数据库的建立，增删改查等功能。</p>
+<p>但是，官方给的API是用C语言写的，用起来总感觉有点不方便，并且官方的API也没有针对多线程进行优化。也就是说，如果你使用原生的API建立数据库，又不进行多线程保护，就会产生数据问题。这对于一个APP是致命的，于是针对官方sqlite的API封装的开源第三方库应运而生。</p>
+<p>其中最好用的莫过于FMDB了，那么他到底好在哪里呢，下面就让我罗列给大家：</p>
+<ul>
+<li>FMDB 是基于iOS sqlite3框架的更高一层的封装，API是用Objective-C写的，代码上相比C语言的API更加好用，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。</li>
+<li>FMDB 对比苹果自带的Core Data框架，更加轻量级和灵活。</li>
+<li>FMDB 提供了多线程安全的数据库操作方法，有效地防止数据混乱。</li>
+</ul>
+<h2 id="FMDB_u7684_u4E09_u4E2A_u6838_u5FC3_u7C7B"><a href="#FMDB_u7684_u4E09_u4E2A_u6838_u5FC3_u7C7B" class="headerlink" title="FMDB的三个核心类"></a>FMDB的三个核心类</h2><ol>
+<li><p>FMDatabase：一个FMDatabase对象就代表一个单独的SQLite数据库，用来执行SQL语句。</p>
+</li>
+<li><p>FMResultSet：使用FMDatabase执行查询后的结果集。</p>
+</li>
+<li><p>FMDatabaseQueue：用于在多线程中执行多个查询或更新，它是线程安全的。</p>
+</li>
+</ol>
+<h2 id="FMDB__u7B80_u5355_u7528_u6CD5"><a href="#FMDB__u7B80_u5355_u7528_u6CD5" class="headerlink" title="FMDB 简单用法"></a>FMDB 简单用法</h2><p>好了，说了这么多，想必大家已经对FMDB有了一定的了解了吧，下面就跟着我一起学习FMDB的使用。</p>
+<p>下面我们用FMDB实现学生管理，实现学生数据的增删改查的基本功能，所有的操作(除了建表)都带多线程保护。</p>
+<p>鉴于篇幅有限，我就只介绍数据库相关的代码，其他逻辑可以参考我写的Demo，Demo会在文章底部给出链接，欢迎大家下载与分享。</p>
+<h3 id="u5EFA_u7ACB_u6570_u636E_u5E93_uFF0C_u5EFA_u7ACB_u5B66_u751F_u7BA1_u7406_u8868"><a href="#u5EFA_u7ACB_u6570_u636E_u5E93_uFF0C_u5EFA_u7ACB_u5B66_u751F_u7BA1_u7406_u8868" class="headerlink" title="建立数据库，建立学生管理表"></a>建立数据库，建立学生管理表</h3><p>设置数据类型的时候要注意，对于基本数据类型，如int，double，float，使用FMDB时，最好都统一存成NSNumber类型，这样会避免出错，减少不必要的麻烦。<br>SQL语句基本和大家平常用的大同小异，这里就不多介绍了。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 建立表</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)createTable</span><br><span class="line">&#123;</span><br><span class="line">    __block <span class="built_in">BOOL</span> createRes = <span class="literal">NO</span>;</span><br><span class="line">    <span class="built_in">NSString</span> *path = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>)<span class="variable">.lastObject</span> stringByAppendingPathComponent:<span class="string">@"student.db"</span>];</span><br><span class="line">    FMDatabase *db = [[FMDatabase alloc] initWithPath:path];</span><br><span class="line">    [db open];</span><br><span class="line">    createRes = [db executeUpdate:<span class="string">@"create table if not exists STUDENT (ID INTEGER PRIMARY KEY AUTOINCREMENT,name NSString, age NSNumber, sex NSString, score NSNumber)"</span>];</span><br><span class="line">    [db close];</span><br><span class="line">    <span class="keyword">return</span> createRes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u6DFB_u52A0_u5B66_u751F_u4FE1_u606F_28_u63D2_u5165_u6570_u636E_29"><a href="#u6DFB_u52A0_u5B66_u751F_u4FE1_u606F_28_u63D2_u5165_u6570_u636E_29" class="headerlink" title="添加学生信息(插入数据)"></a>添加学生信息(插入数据)</h3><p>添加数据这里用到了 <code>FMDatabaseQueue</code> 这个类，用来管理多线程，防止数据混乱，大致思路就是建立一个串行的队列，把添加的任务加进去，一个一个执行。类似我们排队买车票，做到了数据的安全。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加学生信息</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)addStudent:(Student *)student;</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span> createTable];</span><br><span class="line">    <span class="built_in">NSString</span> *path = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>)<span class="variable">.lastObject</span> stringByAppendingPathComponent:<span class="string">@"student.db"</span>];</span><br><span class="line">    __block <span class="built_in">BOOL</span> inserRes = <span class="literal">NO</span>;</span><br><span class="line">    <span class="comment">// 这里使用多线程管理的方法来写，防止数据混乱</span></span><br><span class="line">    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:path];</span><br><span class="line">    [queue inDatabase:^(FMDatabase *db2) &#123;</span><br><span class="line">        inserRes = [db2 executeUpdate:</span><br><span class="line">                    <span class="string">@"insert into 'STUDENT' ('name', 'age', 'sex', 'score') values (?,?,?,?)"</span>,</span><br><span class="line">                    student<span class="variable">.name</span>,</span><br><span class="line">                    [<span class="built_in">NSNumber</span> numberWithInteger:student<span class="variable">.age</span>],</span><br><span class="line">                    student<span class="variable">.sex</span>,</span><br><span class="line">                    [<span class="built_in">NSNumber</span> numberWithFloat:student<span class="variable">.score</span>]</span><br><span class="line">                    ];</span><br><span class="line">        <span class="keyword">if</span> (inserRes) &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- insert a data"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- error insert"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    <span class="keyword">return</span> inserRes;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u4FEE_u6539_u5B66_u751F_u4FE1_u606F_28_u4FEE_u6539_u6570_u636E_29"><a href="#u4FEE_u6539_u5B66_u751F_u4FE1_u606F_28_u4FEE_u6539_u6570_u636E_29" class="headerlink" title="修改学生信息(修改数据)"></a>修改学生信息(修改数据)</h3><p>修改和添加差不多，只是SQL语句不同。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更新学生信息</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)updateStudent:(Student *)student</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span> createTable];</span><br><span class="line">    <span class="built_in">NSString</span> *path = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>)<span class="variable">.lastObject</span> stringByAppendingPathComponent:<span class="string">@"student.db"</span>];</span><br><span class="line">    __block <span class="built_in">BOOL</span> updateRes = <span class="literal">NO</span>;</span><br><span class="line">    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:path];</span><br><span class="line">    [queue inDatabase:^(FMDatabase *db2) &#123;</span><br><span class="line">        updateRes = [db2 executeUpdate:</span><br><span class="line">                     <span class="string">@"update 'STUDENT' set name=?,age=?,sex=?,score=? where ID=?"</span>,</span><br><span class="line">                     student<span class="variable">.name</span>,</span><br><span class="line">                     [<span class="built_in">NSNumber</span> numberWithInteger:student<span class="variable">.age</span>],</span><br><span class="line">                     student<span class="variable">.sex</span>,</span><br><span class="line">                     [<span class="built_in">NSNumber</span> numberWithFloat:student<span class="variable">.score</span>],</span><br><span class="line">                     [<span class="built_in">NSNumber</span> numberWithInteger:student<span class="variable">.ID</span>]</span><br><span class="line">                     ];</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (updateRes) &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- updateRes a data"</span>);</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,path);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- updateRes error insert"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    <span class="keyword">return</span> updateRes;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u5220_u9664_u5B66_u751F_u4FE1_u606F_28_u5220_u9664_u6570_u636E_29"><a href="#u5220_u9664_u5B66_u751F_u4FE1_u606F_28_u5220_u9664_u6570_u636E_29" class="headerlink" title="删除学生信息(删除数据)"></a>删除学生信息(删除数据)</h3><p>根据ID删除数据，这里的ID一定要是唯一的，最好是主键，如果不是主键，要是唯一不重复的字段，ID类型是int，但是传参数要传NSNmber。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除学生信息</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)deleteStudent:(Student *)student</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span> createTable];</span><br><span class="line">    <span class="built_in">NSString</span> *path = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>)<span class="variable">.lastObject</span> stringByAppendingPathComponent:<span class="string">@"student.db"</span>];</span><br><span class="line">    __block <span class="built_in">BOOL</span> deleteRes = <span class="literal">NO</span>;</span><br><span class="line">    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:path];</span><br><span class="line">    [queue inDatabase:^(FMDatabase *db2) &#123;</span><br><span class="line">        deleteRes = [db2 executeUpdate:<span class="string">@"delete from 'STUDENT' where ID=?"</span>,[<span class="built_in">NSNumber</span> numberWithInteger:student<span class="variable">.ID</span>]];</span><br><span class="line">        <span class="keyword">if</span> (deleteRes) &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- deleteRes a data"</span>);</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,path);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"---- deleteRes error insert"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    <span class="keyword">return</span> deleteRes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u83B7_u53D6_u5B66_u751F_u4FE1_u606F_28_u67E5_u8BE2_u6570_u636E_29"><a href="#u83B7_u53D6_u5B66_u751F_u4FE1_u606F_28_u67E5_u8BE2_u6570_u636E_29" class="headerlink" title="获取学生信息(查询数据)"></a>获取学生信息(查询数据)</h3><p>为了满足不通需求的查询需求，我是把条件传进方法，不传参数默认返回所有数据，按ID排序。<br>条件字符串的填写是要注意<code>@&quot;ID=0&quot;</code>这里的0也要是NSNumber，如果字段是字符串类型,要加 <code>&#39;</code> ,如 <code>@&quot;name=&#39;lisi&#39;&quot;</code>。</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 获取学生数据</span><br><span class="line">- (<span class="name">NSArray</span> *)<span class="atom">getStudent</span>:(<span class="name">NSString</span> *)<span class="atom">search</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="atom">self</span> <span class="atom">createTable</span>];</span><br><span class="line">    <span class="name">NSString</span> *<span class="atom">path</span> = [<span class="name">NSSearchPathForDirectoriesInDomains</span>(<span class="name">NSDocumentDirectory</span>, <span class="name">NSUserDomainMask</span>, <span class="name">YES</span>).<span class="atom">lastObject</span> <span class="atom">stringByAppendingPathComponent</span>:@<span class="string">"student.db"</span>];</span><br><span class="line">    <span class="name">FMDatabaseQueue</span> *<span class="atom">queue</span> = [<span class="name">FMDatabaseQueue</span> <span class="atom">databaseQueueWithPath</span>:<span class="atom">path</span>];</span><br><span class="line">    <span class="name">__block</span> <span class="name">NSMutableArray</span> *<span class="atom">fuelsArray</span> = [<span class="name">NSMutableArray</span> <span class="atom">array</span>];</span><br><span class="line">    [<span class="atom">queue</span> <span class="atom">inDatabase</span>:^(<span class="name">FMDatabase</span> *<span class="atom">db2</span>) &#123;</span><br><span class="line">        <span class="name">FMResultSet</span> *<span class="atom">fuels</span> = <span class="atom">nil</span>;</span><br><span class="line">        <span class="atom">if</span> (<span class="atom">search</span>) &#123;</span><br><span class="line">            <span class="name">NSString</span> *<span class="atom">sql</span> = [<span class="name">NSString</span> <span class="atom">stringWithFormat</span>:@<span class="string">"select * from 'STUDENT' where %@ order by ID"</span>,<span class="atom">search</span>];</span><br><span class="line">            <span class="atom">fuels</span> = [<span class="atom">db2</span> <span class="atom">executeQuery</span>:<span class="atom">sql</span>];</span><br><span class="line">        &#125;<span class="atom">else</span> &#123;</span><br><span class="line">            <span class="atom">fuels</span> = [<span class="atom">db2</span> <span class="atom">executeQuery</span>:@<span class="string">"select * from 'STUDENT' order by ID"</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="atom">while</span> ([<span class="atom">fuels</span> <span class="atom">next</span>]) &#123;</span><br><span class="line">            <span class="name">Student</span> *<span class="atom">student</span> = [[<span class="name">Student</span> <span class="atom">alloc</span>]<span class="atom">init</span>];</span><br><span class="line">            <span class="atom">student</span>.<span class="name">ID</span> = [<span class="atom">fuels</span> <span class="atom">intForColumn</span>:@<span class="string">"ID"</span>];</span><br><span class="line">            <span class="atom">student</span>.<span class="atom">name</span> = [<span class="atom">fuels</span> <span class="atom">stringForColumn</span>:@<span class="string">"name"</span>];</span><br><span class="line">            <span class="atom">student</span>.<span class="atom">age</span> = [[<span class="atom">fuels</span> <span class="atom">objectForColumnName</span>:@<span class="string">"age"</span>] <span class="atom">integerValue</span>];</span><br><span class="line">            <span class="atom">student</span>.<span class="atom">sex</span> = [<span class="atom">fuels</span> <span class="atom">stringForColumn</span>:@<span class="string">"sex"</span>];</span><br><span class="line">            <span class="atom">student</span>.<span class="atom">score</span> = [[<span class="atom">fuels</span> <span class="atom">objectForColumnName</span>:@<span class="string">"score"</span>] <span class="atom">floatValue</span>];</span><br><span class="line">            [<span class="atom">fuelsArray</span> <span class="atom">addObject</span>:<span class="atom">student</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    <span class="atom">return</span> <span class="atom">fuelsArray</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h3><p>以上就是FMDB实现学生数据管理的简单代码示例，总体来说并不复杂，可以说FMDB帮我们做了很多事，我们只需要写好SQL语句，就可以很方便的实现数据库的操作了。下面是我写的Demo，仅供参考，有错误的地方也欢迎大家改正。</p>
+<h2 id="Demo_u5730_u5740_uFF1A"><a href="#Demo_u5730_u5740_uFF1A" class="headerlink" title="Demo地址："></a>Demo地址：</h2><p><a href="https://github.com/enoughpower/FMDB-demo" target="_blank" rel="external">https://github.com/enoughpower/FMDB-demo</a></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FMDB/" rel="tag">#FMDB</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/12/markdown学习笔记/" rel="prev" title="markdown学习笔记">
+                markdown学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/12/12/FMDB简单使用/"
+     data-title="FMDB简单使用"
+     data-content=""
+     data-url="http://www.cocoadc.com/2015/12/12/FMDB简单使用/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/12/FMDB简单使用/"
+           data-title="FMDB简单使用" data-url="http://www.cocoadc.com/2015/12/12/FMDB简单使用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="邓程" />
+          <p class="site-author-name" itemprop="name">邓程</p>
+          <p class="site-description motion-element" itemprop="description">努力做好自己</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/enoughpower" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2189623234" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.iosli.com" target="_blank">男孩无衣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.lidaze.com" target="_blank">李大泽</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://koknine.com" target="_blank">fff</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u4F7F_u7528FMDB_u5B9E_u73B0iOS_u6570_u636E_u5E93_u589E_u5220_u6539_u67E5"><span class="nav-number">1.</span> <span class="nav-text">使用FMDB实现iOS数据库增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4EC0_u4E48_u662FFMDB"><span class="nav-number">1.1.</span> <span class="nav-text">什么是FMDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FMDB_u7684_u4E09_u4E2A_u6838_u5FC3_u7C7B"><span class="nav-number">1.2.</span> <span class="nav-text">FMDB的三个核心类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FMDB__u7B80_u5355_u7528_u6CD5"><span class="nav-number">1.3.</span> <span class="nav-text">FMDB 简单用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5EFA_u7ACB_u6570_u636E_u5E93_uFF0C_u5EFA_u7ACB_u5B66_u751F_u7BA1_u7406_u8868"><span class="nav-number">1.3.1.</span> <span class="nav-text">建立数据库，建立学生管理表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6DFB_u52A0_u5B66_u751F_u4FE1_u606F_28_u63D2_u5165_u6570_u636E_29"><span class="nav-number">1.3.2.</span> <span class="nav-text">添加学生信息(插入数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4FEE_u6539_u5B66_u751F_u4FE1_u606F_28_u4FEE_u6539_u6570_u636E_29"><span class="nav-number">1.3.3.</span> <span class="nav-text">修改学生信息(修改数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5220_u9664_u5B66_u751F_u4FE1_u606F_28_u5220_u9664_u6570_u636E_29"><span class="nav-number">1.3.4.</span> <span class="nav-text">删除学生信息(删除数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u83B7_u53D6_u5B66_u751F_u4FE1_u606F_28_u67E5_u8BE2_u6570_u636E_29"><span class="nav-number">1.3.5.</span> <span class="nav-text">获取学生信息(查询数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">1.3.6.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo_u5730_u5740_uFF1A"><span class="nav-number">1.4.</span> <span class="nav-text">Demo地址：</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">邓程</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"enoughpower"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("wb1gJktGMRELpuMgPALmBfy9-gzGzoHsz", "xGiiTQsu7NVm318NM8TsQ04q");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>
