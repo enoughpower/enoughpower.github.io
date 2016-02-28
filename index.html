@@ -261,6 +261,190 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/25/Quartz2D详解/" itemprop="url">
+                  Quartz2D详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-25T21:23:26+08:00" content="2016-02-25">
+              2016-02-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/25/Quartz2D详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/25/Quartz2D详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/02/25/Quartz2D详解/" class="leancloud_visitors" data-flag-title="Quartz2D详解">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="u4EC0_u4E48_u662FQuartz2D_3F"><a href="#u4EC0_u4E48_u662FQuartz2D_3F" class="headerlink" title="什么是Quartz2D?"></a>什么是Quartz2D?</h2><p>简单来说，Quartz2D是用C语言封装的二维绘图引擎，同时支持iOS和Mac系统，利用Quartz2D，我们可以完成以下工作：</p>
+<ul>
+<li>绘制图形 : 线条\三角形\矩形\圆\弧等</li>
+<li>绘制文字</li>
+<li>绘制\生成图片(图像)</li>
+<li>读取\生成PDF</li>
+<li>截图\裁剪图片</li>
+<li>自定义UI控件</li>
+</ul>
+<h3 id="u5B66_u4E60Quartz2D_u7684_u4EF7_u503C_u5728_u54EA_u91CC"><a href="#u5B66_u4E60Quartz2D_u7684_u4EF7_u503C_u5728_u54EA_u91CC" class="headerlink" title="学习Quartz2D的价值在哪里"></a>学习Quartz2D的价值在哪里</h3><p>虽然Quartz2D属于偏底层的API，并且UIKit已经把我们经常使用的控件封装好，但是，面对一些自定义控件，复杂的控件，UIKit就显得有些无力了。</p>
+<p>学好Quartz2D，我们就可以：</p>
+<ul>
+<li>绘制一些系统UIKit框架中不好展示的内容，例如饼图，环形进度条，统计图表</li>
+<li>自定义一些控件</li>
+<li>不添加UI控件的情况下，使UI内容更丰富</li>
+<li>……</li>
+</ul>
+<p><strong>在iOS中，我们所看见的大部分控件都是利用Quartz2D绘制出来的。</strong></p>
+<h3 id="u4EC0_u4E48_u662F_u56FE_u5F62_u4E0A_u4E0B_u6587"><a href="#u4EC0_u4E48_u662F_u56FE_u5F62_u4E0A_u4E0B_u6587" class="headerlink" title="什么是图形上下文"></a>什么是图形上下文</h3><p>简单来说，图形上下文就相当于一块画布，我们可以在这块画布上画任何我们想要的内容，最后展示在View上。</p>
+<p>然而，这个画布一定要在drawRect:方法里面去获取，实现才有效，下面就具体讲下这个方法。</p>
+<h2 id="drawRect_3A"><a href="#drawRect_3A" class="headerlink" title="drawRect:"></a>drawRect:</h2><blockquote>
+<p>为什么要实现drawRect:方法才能绘图到view上？</p>
+<p>因为在drawRect:方法中才能取得跟view相关联的图形上下文</p>
+<p>在drawRect:方法中取得上下文后，就可以绘制东西到view上</p>
+</blockquote>
+<h3 id="drawRect_u5982_u4F55_u7ED8_u56FE_u5230View_u4E0A"><a href="#drawRect_u5982_u4F55_u7ED8_u56FE_u5230View_u4E0A" class="headerlink" title="drawRect如何绘图到View上"></a>drawRect如何绘图到View上</h3><p>View内部有个layer（图层）属性，drawRect:方法中取得的是一个Layer Graphics Context，因此，绘制的东西其实是绘制到view的layer上去了</p>
+<p><strong>View之所以能显示东西，完全是因为它内部的layer</strong></p>
+<h3 id="drawRect_3A_u65B9_u6CD5_u5982_u4F55_u8C03_u7528_u7684"><a href="#drawRect_3A_u65B9_u6CD5_u5982_u4F55_u8C03_u7528_u7684" class="headerlink" title="drawRect:方法如何调用的"></a>drawRect:方法如何调用的</h3><ul>
+<li>当view第一次显示到屏幕上时，系统会创建好一个跟当前view相关的Layer上下文</li>
+<li>系统会通过此上下文，在drawRect:方法中绘制好当前view的内容</li>
+<li>主动让view重绘内容的时候，调用setNeedsDisplay或者setNeedsDisplayInRect:。我们主动调用drawRect:方法是无效的。</li>
+<li>调用view的setNeedsDisplay或者setNeedsDisplayInRect:时</li>
+<li><strong>注意</strong>：setNeedsDisplay和setNeedsDisplayInRect:方法调用后，屏幕并不是立即刷新，而是会在下一次刷新屏幕的时候把绘制的内容显示出来。</li>
+</ul>
+<p>也正是系统会在调用这个方法之前创建一个与该view相关的上下文，才让我们可以在drawRect:方法中绘制。</p>
+<p>注意：<strong>在其他地方拿不到view相关的上下文，所以不能实现绘制。</strong></p>
+<h2 id="u81EA_u5B9A_u4E49View_u7684_u6B65_u9AA4"><a href="#u81EA_u5B9A_u4E49View_u7684_u6B65_u9AA4" class="headerlink" title="自定义View的步骤"></a>自定义View的步骤</h2><blockquote>
+<p>如何利用Quartz2D绘制东西到view上？</p>
+</blockquote>
+<ol>
+<li>新建一个类，继承自UIView</li>
+<li>实现- (void)drawRect:(CGRect)rect方法，然后在这个方法中</li>
+<li>取得跟当前view相关联的图形上下文</li>
+<li>绘制相应的图形内容</li>
+<li>利用图形上下文将绘制的所有内容渲染显示到view上面</li>
+</ol>
+<h4 id="u4E0B_u9762_u6211_u5C31_u4ECB_u7ECD_u5982_u4F55_u4F7F_u7528Quartz2D_u753B_u5404_u79CD_u56FE_u5F62_u3002"><a href="#u4E0B_u9762_u6211_u5C31_u4ECB_u7ECD_u5982_u4F55_u4F7F_u7528Quartz2D_u753B_u5404_u79CD_u56FE_u5F62_u3002" class="headerlink" title="下面我就介绍如何使用Quartz2D画各种图形。"></a>下面我就介绍如何使用Quartz2D画各种图形。</h4><h2 id="u5B9E_u73B0_u4EE3_u7801"><a href="#u5B9E_u73B0_u4EE3_u7801" class="headerlink" title="实现代码"></a>实现代码</h2><h3 id="u5199_u6587_u5B57"><a href="#u5199_u6587_u5B57" class="headerlink" title="写文字"></a>写文字</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *text = <span class="string">@"我要写的文字"</span>;</span><br><span class="line"><span class="built_in">UIFont</span> *font = [<span class="built_in">UIFont</span> boldSystemFontOfSize:<span class="number">20.</span>f];</span><br><span class="line"><span class="built_in">UIColor</span> *color = [<span class="built_in">UIColor</span> purpleColor];</span><br><span class="line"><span class="built_in">NSDictionary</span> *attributes = @&#123;<span class="built_in">NSForegroundColorAttributeName</span>:color,</span><br><span class="line">                             <span class="built_in">NSFontAttributeName</span>:font&#125;;</span><br><span class="line">[text drawInRect:<span class="built_in">CGRectMake</span>(<span class="number">10</span>, <span class="number">20</span>, <span class="number">80</span>, <span class="number">20</span>) withAttributes:attributes];</span><br></pre></td></tr></table></figure>
+<h3 id="u753B_u5706"><a href="#u753B_u5706" class="headerlink" title="画圆"></a>画圆</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();  </span><br><span class="line"><span class="built_in">CGContextSetStrokeColorWithColor</span>(context, [<span class="built_in">UIColor</span> redColor]<span class="variable">.CGColor</span>);<span class="comment">//设置画笔颜色</span></span><br><span class="line"><span class="built_in">CGContextSetFillColorWithColor</span>(context, [<span class="built_in">UIColor</span> yellowColor]<span class="variable">.CGColor</span>);<span class="comment">//设置填充颜色</span></span><br><span class="line"><span class="built_in">CGContextSetLineWidth</span>(context, <span class="number">5.</span>f);<span class="comment">//线的宽度</span></span><br><span class="line"><span class="built_in">CGContextAddArc</span>(context, <span class="number">100</span>, <span class="number">200</span>, <span class="number">15</span>, <span class="number">0</span>, M_PI * <span class="number">2</span>, <span class="number">0</span>); <span class="comment">//添加一个圆CGContextDrawPath(context, kCGPathStroke); //绘制路径</span></span><br></pre></td></tr></table></figure>
+<p><code>void CGContextAddArc(CGContextRef c,CGFloat x, CGFloat y,CGFloat radius,CGFloat startAngle,CGFloat endAngle, int clockwise)</code></p>
+<ul>
+<li>x,y为圆点坐标</li>
+<li>radius半径</li>
+<li>startAngle为开始的弧度</li>
+<li>endAngle为 结束的弧度</li>
+<li>clockwise 0为顺时针，1为逆时针</li>
+<li>ps:1弧度＝180°/π （≈57.3°） 度＝弧度×180°/π 360°＝360×π/180 ＝2π 弧度</li>
+</ul>
+<p><code>CGContextDrawPath(context, kCGPathStroke)</code>这个方法的第二个参数是一个枚举</p>
+<ul>
+<li>kCGPathFill 填充非零绕数规则,</li>
+<li>kCGPathEOFill 表示用奇偶规则,</li>
+<li>kCGPathStroke 路径,</li>
+<li>kCGPathFillStroke 路径填充,</li>
+<li>kCGPathEOFillStroke 表示描线，不是填充</li>
+</ul>
+<p>如果你只想画一个圆而不需要填充就用<code>kCGPathStroke</code>,如果你不想要路径，只想填充就用<code>kCGPathFil</code>，如果你既要路径又要填充就要使用<code>kCGPathFillStroke</code>。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/23/MVVM+ReactiveCocoa/" itemprop="url">
                   MVVM+ReactiveCocoa简单介绍
                 </a>
@@ -913,7 +1097,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -927,7 +1111,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

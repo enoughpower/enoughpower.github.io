@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="CGContextRef,Quartz 2D," />
 
 
 
@@ -57,22 +57,43 @@
 
 
 
-<meta name="description" content="说到互联网，大家一定不会陌生，从我们开始接触电脑开始，这个词就一直陪伴这我们，可以说，社会发展到今天，互联网发挥着越来越重要的作用。　　然而，如今的互联网的发展正朝着移动设备推进，在10年以前，你能想到现在的人们可以在手机上看球赛，刷微博，甚至分享自己的生活么。正是因为移动设备的便捷性，使得互联网再次焕发了生机。
+<meta name="description" content="什么是Quartz2D?简单来说，Quartz2D是用C语言封装的二维绘图引擎，同时支持iOS和Mac系统，利用Quartz2D，我们可以完成以下工作：
 
-移动互联网的诞生　　移动互联网的诞生可以说是多方面的共同促进的。没有其中一个，移动">
+绘制图形 : 线条\三角形\矩形\圆\弧等
+绘制文字
+绘制\生成图片(图像)
+读取\生成PDF
+截图\裁剪图片
+自定义UI控件
+
+学习Quartz2D的价值在哪里虽然Quartz2D属于偏底层的API，并且UIKit已经把我们经常使用的控件封装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="互联网？新一轮的机遇？">
-<meta property="og:url" content="http://www.cocoadc.com/2016/01/17/互联网？新一轮的机遇？/index.html">
+<meta property="og:title" content="Quartz2D详解">
+<meta property="og:url" content="http://www.cocoadc.com/2016/02/25/Quartz2D详解/index.html">
 <meta property="og:site_name" content="enoughpower">
-<meta property="og:description" content="说到互联网，大家一定不会陌生，从我们开始接触电脑开始，这个词就一直陪伴这我们，可以说，社会发展到今天，互联网发挥着越来越重要的作用。　　然而，如今的互联网的发展正朝着移动设备推进，在10年以前，你能想到现在的人们可以在手机上看球赛，刷微博，甚至分享自己的生活么。正是因为移动设备的便捷性，使得互联网再次焕发了生机。
+<meta property="og:description" content="什么是Quartz2D?简单来说，Quartz2D是用C语言封装的二维绘图引擎，同时支持iOS和Mac系统，利用Quartz2D，我们可以完成以下工作：
 
-移动互联网的诞生　　移动互联网的诞生可以说是多方面的共同促进的。没有其中一个，移动">
-<meta property="og:updated_time" content="2016-01-23T08:07:14.000Z">
+绘制图形 : 线条\三角形\矩形\圆\弧等
+绘制文字
+绘制\生成图片(图像)
+读取\生成PDF
+截图\裁剪图片
+自定义UI控件
+
+学习Quartz2D的价值在哪里虽然Quartz2D属于偏底层的API，并且UIKit已经把我们经常使用的控件封装">
+<meta property="og:updated_time" content="2016-02-28T11:39:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="互联网？新一轮的机遇？">
-<meta name="twitter:description" content="说到互联网，大家一定不会陌生，从我们开始接触电脑开始，这个词就一直陪伴这我们，可以说，社会发展到今天，互联网发挥着越来越重要的作用。　　然而，如今的互联网的发展正朝着移动设备推进，在10年以前，你能想到现在的人们可以在手机上看球赛，刷微博，甚至分享自己的生活么。正是因为移动设备的便捷性，使得互联网再次焕发了生机。
+<meta name="twitter:title" content="Quartz2D详解">
+<meta name="twitter:description" content="什么是Quartz2D?简单来说，Quartz2D是用C语言封装的二维绘图引擎，同时支持iOS和Mac系统，利用Quartz2D，我们可以完成以下工作：
 
-移动互联网的诞生　　移动互联网的诞生可以说是多方面的共同促进的。没有其中一个，移动">
+绘制图形 : 线条\三角形\矩形\圆\弧等
+绘制文字
+绘制\生成图片(图像)
+读取\生成PDF
+截图\裁剪图片
+自定义UI控件
+
+学习Quartz2D的价值在哪里虽然Quartz2D属于偏底层的API，并且UIKit已经把我们经常使用的控件封装">
 
 
 
@@ -90,7 +111,7 @@
   };
 </script>
 
-  <title> 互联网？新一轮的机遇？ | enoughpower </title>
+  <title> Quartz2D详解 | enoughpower </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -259,7 +280,7 @@
             
             
               
-                互联网？新一轮的机遇？
+                Quartz2D详解
               
             
           </h1>
@@ -271,8 +292,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-17T16:14:41+08:00" content="2016-01-17">
-              2016-01-17
+            <time itemprop="dateCreated" datetime="2016-02-25T21:23:26+08:00" content="2016-02-25">
+              2016-02-25
             </time>
           </span>
 
@@ -285,8 +306,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">杂谈</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -301,8 +322,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/17/互联网？新一轮的机遇？/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/17/互联网？新一轮的机遇？/" itemprop="commentsCount"></span>
+                <a href="/2016/02/25/Quartz2D详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/25/Quartz2D详解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -312,7 +333,7 @@
 
           
           
-             <span id="/2016/01/17/互联网？新一轮的机遇？/" class="leancloud_visitors" data-flag-title="互联网？新一轮的机遇？">
+             <span id="/2016/02/25/Quartz2D详解/" class="leancloud_visitors" data-flag-title="Quartz2D详解">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -332,43 +353,98 @@
       
 
       
-        <blockquote>
-<p>　　说到互联网，大家一定不会陌生，从我们开始接触电脑开始，这个词就一直陪伴这我们，可以说，社会发展到今天，互联网发挥着越来越重要的作用。<br>　　然而，如今的互联网的发展正朝着移动设备推进，在10年以前，你能想到现在的人们可以在手机上看球赛，刷微博，甚至分享自己的生活么。正是因为移动设备的便捷性，使得互联网再次焕发了生机。</p>
-</blockquote>
-<h3 id="u79FB_u52A8_u4E92_u8054_u7F51_u7684_u8BDE_u751F"><a href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u8BDE_u751F" class="headerlink" title="移动互联网的诞生"></a>移动互联网的诞生</h3><p>　　移动互联网的诞生可以说是多方面的共同促进的。没有其中一个，移动互联就不会变的现在这么流行与火爆。<br>　　首先，是通讯技术的进步。３Ｇ网络的诞生，使得我们手机可以像电脑一样上网，不需要再连网线，不用再为手机网速慢而急躁不安。这一切，都归功于通讯技术的飞速发展，有了高速的移动数据传输，为移动互联网的发展奠定了基础。<br>　　其次是手机这类移动终端的兴起，移动设备作为互联网传播的载体，在互联网发展中的重要性不言而喻。从乔布斯发布第一款iPhone开始，移动设备以它体积小，使用便捷，随身携带的绝对优势，被越来越多的人当做获取信息的主要载体。移动设备发展到今天，无论是从娱乐性，还是工作上已经能和传统PC相媲美。手机，在今天，已经不仅仅只是用来打电话，发短信了，它成为了我们生活中不可缺少的一部分。在家里，我们可以用手机看电视，看报纸，在商场，我们可以用手机买衣服，在公园，我们可以用手机拍照，录旅行游记。正是因为手机这个移动设备的流行，互联网通过这个载体，使得信息的传播更加快速，与准确。<br>　　最后，就是支撑手机等移动终端的移动操作系统的诞生。如果说手机是移动互联网的载体，那么，移动操作系统和软件就是移动互联网的魂，一个再好的设备，没有好的用户交互，没有很棒的应用，是不会火的。然而以苹果为首的iOS系统和谷歌的Android系统的出现，使得手机变的和电脑一般的智能，基于操作系统所衍生出来的第三方软件市场更是加快了手机智能化的步伐。通过安装APP的方式来扩展手机的功能，已经成为了主流，正是这种类似电脑的强大的操作系统，成就了移动互联网的蓬勃发展。如今手机的APP已经渗透到了生活的方方面面，我们的生活似乎已经离不开它们了。</p>
-<h3 id="u79FB_u52A8_u4E92_u8054_u7F51_u7684_u4ECE_u4E1A_u4EBA_u5458"><a href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u4ECE_u4E1A_u4EBA_u5458" class="headerlink" title="移动互联网的从业人员"></a>移动互联网的从业人员</h3><p>　　互联网这个圈子很大，里面的从业人员，从技术，人事，再到运营，可以说面面俱到，包含了社会各个层面的人才。互联网不同于传统产业，需要大量的前期投入，互联网本身并不是产品，互联网是一个平台，为传统产业提供技术，人才，投资市场，等等一切它们所需要的服务。互联网是一个高端人才聚集的行业，互联网依赖网络技术，这就决定了，互联网需要的人才需要懂一定的网络技术，要对计算机有所了解。如果是技术团队的人才，你甚至还要懂很多编程的知识，这在一定上也决定了，这行必须是由高端人才，他们对未来充满激情，头脑聪明，擅长学习新的技术的年轻一代引领。<br>　　我在互联网也算是工作了小半年，虽然接触的圈子非常有限，大多是技术团队，从中大概总结了下从事互联网的的一般特征：</p>
+        <h2 id="u4EC0_u4E48_u662FQuartz2D_3F"><a href="#u4EC0_u4E48_u662FQuartz2D_3F" class="headerlink" title="什么是Quartz2D?"></a>什么是Quartz2D?</h2><p>简单来说，Quartz2D是用C语言封装的二维绘图引擎，同时支持iOS和Mac系统，利用Quartz2D，我们可以完成以下工作：</p>
 <ul>
-<li>大多年轻，80后、90后居多</li>
-<li>对新鲜的技术比较敏感，喜欢新的东西</li>
-<li>大多集中在较发达城市，人员流动性大</li>
+<li>绘制图形 : 线条\三角形\矩形\圆\弧等</li>
+<li>绘制文字</li>
+<li>绘制\生成图片(图像)</li>
+<li>读取\生成PDF</li>
+<li>截图\裁剪图片</li>
+<li>自定义UI控件</li>
 </ul>
-<p>　　由于年轻人较多，他们对新的事物，没有老一代人那么排斥，大多数都是主动接受，80后，90后本生就是社会的未来，他们的价值观决定了未来的中国的走向。他们不喜欢被拘束，被管教，所以，不同于传统行业，互联网企业对员工的管理也是非常的人性化。很多创业型互联网公司，创始人本身就是80后90后，他们更清楚员工该怎么管理，这也是互联网公司不同于一般企业的地方。</p>
-<h3 id="u79FB_u52A8_u4E92_u8054_u7F51_u7684_u76C8_u5229_u6A21_u5F0F"><a href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u76C8_u5229_u6A21_u5F0F" class="headerlink" title="移动互联网的盈利模式"></a>移动互联网的盈利模式</h3><p>　　移动互联网的盈利模式和传统互联网的盈利模式，在我个人看来其实并没有什么太大的区别。我们知道，传统互联网公司的收入一般来自广告，平台推广，排名竞价。其中，广告投放应该算是互联网收入的主要来源，因为互联网传播的高效，广告推广往往比传统媒体来的更加有效，成本也会相对低廉。随着这两年O2O的兴起，移动凭借其独有的优势，巧妙得将线下商家和互联网联系了起来。<br>　　然而，移动互联网发展到了今天，绝大多数公司并没有实现盈利。相反，亏损是一年比一年加剧，这种靠补贴的推广，前期投入非常大。许多创业公司往往撑不到一年就出现投资资金链断裂，而无力继续经营下去。而那些有前途的公司，如滴滴，美团，虽然每年亏损更多，但是它们可以吸引比投入多几倍的投资，其中不乏bat的参与。它们在几年内能迅速发展壮大，也要感谢这些参与融资的公司。尽管如此，这种靠融资补贴的O2O能火多久呢？一旦投资商撤资，对于这类公司的打击将是毁灭性的。<br>　　那么，我们再看看国内互联网３巨头，百度，阿里，腾讯是怎么盈利的。百度的收入绝大多数都是来自搜索引擎的广告收入和竞价收入，由于百度在搜索领域的地位，光广告收入就足够百度运营。阿里巴巴是电商的领军者，它主要靠平台加盟，金融交易，小部分广告。你的每一笔在阿里巴巴的交易，阿里巴巴都能分到一杯羹，也许这点对于我们真的只是九牛一毛，但是，随着用户基数上来，这收入也是可观的。腾讯现在拥有全中国最多的用户量，微信近５亿的用户，再加上微信这种大家都离不开的产品，推广对于腾讯几乎就是零成本。当然广告还远远不够，腾讯的收入很多还来自游戏运营。没错，做游戏是很赚钱的，仗着用户多的优势，腾讯现在在游戏领域也算是国内的No1了。<br>　　通过分析，我们也许会发现，这三家公司都有一个共同的特点，那就是用户数量已经达到了惊人的数量，这也是互联网的关键。抢到更多的用户，就能在未来的几年占据优势。那么，我们大概就可以理解现在移动互联网为什么要补贴式的推广了，就是抢用户数量。一旦用户数量起来，广告投放，都是轻而易举的事情。</p>
-<h3 id="u673A_u9047_u548C_u6311_u6218"><a href="#u673A_u9047_u548C_u6311_u6218" class="headerlink" title="机遇和挑战"></a>机遇和挑战</h3><p>　　俗话说的好，不喜欢当官的士兵不是好士兵。我相信每个人心中都有一个伟大的梦想，不管它是多么的天马行空，多么的不靠谱。而互联网恰恰是最容易让你的梦想实现的地方。<br>　　我们这一代人，都喜欢做自己喜欢的事，随心所欲。我相信大多数人都不甘心一辈子做员工吧，在如今互联网大火的形势下，大家都想搏一把，万一成功了呢？机会是不等人的，抓住了机遇，你或许就能成功。<br>　　当然，创业的路并不是那么简单，你可能会面临资金问题，员工问题。创业之路不可能是一帆风顺的，你会面临许多挑战，你甚至会想到放弃创业。但是，只要你努力过，就一定会有收获，并且会受益终生。</p>
-<h3 id="u9898_u5916_u8BDD"><a href="#u9898_u5916_u8BDD" class="headerlink" title="题外话"></a>题外话</h3><p>　　扯了这么多，我也挺累的，作为一名程序猿，很多时候想的最多只是怎么解决ｂｕｇ而已，创业说句实话，想都不敢想。。。那为什么还要提呢？现在不敢想，不代表１０年之后不敢想，每个人都有梦想，不要让自己的梦被现实所淹没。<br>　　我还是相信，努力总会有回报，相信自己，相信未来，相信移动互联网。
-　　</p>
+<h3 id="u5B66_u4E60Quartz2D_u7684_u4EF7_u503C_u5728_u54EA_u91CC"><a href="#u5B66_u4E60Quartz2D_u7684_u4EF7_u503C_u5728_u54EA_u91CC" class="headerlink" title="学习Quartz2D的价值在哪里"></a>学习Quartz2D的价值在哪里</h3><p>虽然Quartz2D属于偏底层的API，并且UIKit已经把我们经常使用的控件封装好，但是，面对一些自定义控件，复杂的控件，UIKit就显得有些无力了。</p>
+<p>学好Quartz2D，我们就可以：</p>
+<ul>
+<li>绘制一些系统UIKit框架中不好展示的内容，例如饼图，环形进度条，统计图表</li>
+<li>自定义一些控件</li>
+<li>不添加UI控件的情况下，使UI内容更丰富</li>
+<li>……</li>
+</ul>
+<p><strong>在iOS中，我们所看见的大部分控件都是利用Quartz2D绘制出来的。</strong></p>
+<h3 id="u4EC0_u4E48_u662F_u56FE_u5F62_u4E0A_u4E0B_u6587"><a href="#u4EC0_u4E48_u662F_u56FE_u5F62_u4E0A_u4E0B_u6587" class="headerlink" title="什么是图形上下文"></a>什么是图形上下文</h3><p>简单来说，图形上下文就相当于一块画布，我们可以在这块画布上画任何我们想要的内容，最后展示在View上。</p>
+<p>然而，这个画布一定要在drawRect:方法里面去获取，实现才有效，下面就具体讲下这个方法。</p>
+<h2 id="drawRect_3A"><a href="#drawRect_3A" class="headerlink" title="drawRect:"></a>drawRect:</h2><blockquote>
+<p>为什么要实现drawRect:方法才能绘图到view上？</p>
+<p>因为在drawRect:方法中才能取得跟view相关联的图形上下文</p>
+<p>在drawRect:方法中取得上下文后，就可以绘制东西到view上</p>
+</blockquote>
+<h3 id="drawRect_u5982_u4F55_u7ED8_u56FE_u5230View_u4E0A"><a href="#drawRect_u5982_u4F55_u7ED8_u56FE_u5230View_u4E0A" class="headerlink" title="drawRect如何绘图到View上"></a>drawRect如何绘图到View上</h3><p>View内部有个layer（图层）属性，drawRect:方法中取得的是一个Layer Graphics Context，因此，绘制的东西其实是绘制到view的layer上去了</p>
+<p><strong>View之所以能显示东西，完全是因为它内部的layer</strong></p>
+<h3 id="drawRect_3A_u65B9_u6CD5_u5982_u4F55_u8C03_u7528_u7684"><a href="#drawRect_3A_u65B9_u6CD5_u5982_u4F55_u8C03_u7528_u7684" class="headerlink" title="drawRect:方法如何调用的"></a>drawRect:方法如何调用的</h3><ul>
+<li>当view第一次显示到屏幕上时，系统会创建好一个跟当前view相关的Layer上下文</li>
+<li>系统会通过此上下文，在drawRect:方法中绘制好当前view的内容</li>
+<li>主动让view重绘内容的时候，调用setNeedsDisplay或者setNeedsDisplayInRect:。我们主动调用drawRect:方法是无效的。</li>
+<li>调用view的setNeedsDisplay或者setNeedsDisplayInRect:时</li>
+<li><strong>注意</strong>：setNeedsDisplay和setNeedsDisplayInRect:方法调用后，屏幕并不是立即刷新，而是会在下一次刷新屏幕的时候把绘制的内容显示出来。</li>
+</ul>
+<p>也正是系统会在调用这个方法之前创建一个与该view相关的上下文，才让我们可以在drawRect:方法中绘制。</p>
+<p>注意：<strong>在其他地方拿不到view相关的上下文，所以不能实现绘制。</strong></p>
+<h2 id="u81EA_u5B9A_u4E49View_u7684_u6B65_u9AA4"><a href="#u81EA_u5B9A_u4E49View_u7684_u6B65_u9AA4" class="headerlink" title="自定义View的步骤"></a>自定义View的步骤</h2><blockquote>
+<p>如何利用Quartz2D绘制东西到view上？</p>
+</blockquote>
+<ol>
+<li>新建一个类，继承自UIView</li>
+<li>实现- (void)drawRect:(CGRect)rect方法，然后在这个方法中</li>
+<li>取得跟当前view相关联的图形上下文</li>
+<li>绘制相应的图形内容</li>
+<li>利用图形上下文将绘制的所有内容渲染显示到view上面</li>
+</ol>
+<h4 id="u4E0B_u9762_u6211_u5C31_u4ECB_u7ECD_u5982_u4F55_u4F7F_u7528Quartz2D_u753B_u5404_u79CD_u56FE_u5F62_u3002"><a href="#u4E0B_u9762_u6211_u5C31_u4ECB_u7ECD_u5982_u4F55_u4F7F_u7528Quartz2D_u753B_u5404_u79CD_u56FE_u5F62_u3002" class="headerlink" title="下面我就介绍如何使用Quartz2D画各种图形。"></a>下面我就介绍如何使用Quartz2D画各种图形。</h4><h2 id="u5B9E_u73B0_u4EE3_u7801"><a href="#u5B9E_u73B0_u4EE3_u7801" class="headerlink" title="实现代码"></a>实现代码</h2><h3 id="u5199_u6587_u5B57"><a href="#u5199_u6587_u5B57" class="headerlink" title="写文字"></a>写文字</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *text = <span class="string">@"我要写的文字"</span>;</span><br><span class="line"><span class="built_in">UIFont</span> *font = [<span class="built_in">UIFont</span> boldSystemFontOfSize:<span class="number">20.</span>f];</span><br><span class="line"><span class="built_in">UIColor</span> *color = [<span class="built_in">UIColor</span> purpleColor];</span><br><span class="line"><span class="built_in">NSDictionary</span> *attributes = @&#123;<span class="built_in">NSForegroundColorAttributeName</span>:color,</span><br><span class="line">                             <span class="built_in">NSFontAttributeName</span>:font&#125;;</span><br><span class="line">[text drawInRect:<span class="built_in">CGRectMake</span>(<span class="number">10</span>, <span class="number">20</span>, <span class="number">80</span>, <span class="number">20</span>) withAttributes:attributes];</span><br></pre></td></tr></table></figure>
+<h3 id="u753B_u5706"><a href="#u753B_u5706" class="headerlink" title="画圆"></a>画圆</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();  </span><br><span class="line"><span class="built_in">CGContextSetStrokeColorWithColor</span>(context, [<span class="built_in">UIColor</span> redColor]<span class="variable">.CGColor</span>);<span class="comment">//设置画笔颜色</span></span><br><span class="line"><span class="built_in">CGContextSetFillColorWithColor</span>(context, [<span class="built_in">UIColor</span> yellowColor]<span class="variable">.CGColor</span>);<span class="comment">//设置填充颜色</span></span><br><span class="line"><span class="built_in">CGContextSetLineWidth</span>(context, <span class="number">5.</span>f);<span class="comment">//线的宽度</span></span><br><span class="line"><span class="built_in">CGContextAddArc</span>(context, <span class="number">100</span>, <span class="number">200</span>, <span class="number">15</span>, <span class="number">0</span>, M_PI * <span class="number">2</span>, <span class="number">0</span>); <span class="comment">//添加一个圆CGContextDrawPath(context, kCGPathStroke); //绘制路径</span></span><br></pre></td></tr></table></figure>
+<p><code>void CGContextAddArc(CGContextRef c,CGFloat x, CGFloat y,CGFloat radius,CGFloat startAngle,CGFloat endAngle, int clockwise)</code></p>
+<ul>
+<li>x,y为圆点坐标</li>
+<li>radius半径</li>
+<li>startAngle为开始的弧度</li>
+<li>endAngle为 结束的弧度</li>
+<li>clockwise 0为顺时针，1为逆时针</li>
+<li>ps:1弧度＝180°/π （≈57.3°） 度＝弧度×180°/π 360°＝360×π/180 ＝2π 弧度</li>
+</ul>
+<p><code>CGContextDrawPath(context, kCGPathStroke)</code>这个方法的第二个参数是一个枚举</p>
+<ul>
+<li>kCGPathFill 填充非零绕数规则,</li>
+<li>kCGPathEOFill 表示用奇偶规则,</li>
+<li>kCGPathStroke 路径,</li>
+<li>kCGPathFillStroke 路径填充,</li>
+<li>kCGPathEOFillStroke 表示描线，不是填充</li>
+</ul>
+<p>如果你只想画一个圆而不需要填充就用<code>kCGPathStroke</code>,如果你不想要路径，只想填充就用<code>kCGPathFil</code>，如果你既要路径又要填充就要使用<code>kCGPathFillStroke</code>。</p>
 
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/CGContextRef/" rel="tag">#CGContextRef</a>
+          
+            <a href="/tags/Quartz-2D/" rel="tag">#Quartz 2D</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/12/markdown学习笔记/" rel="next" title="markdown学习笔记">
-                <i class="fa fa-chevron-left"></i> markdown学习笔记
+              <a href="/2016/02/23/MVVM+ReactiveCocoa/" rel="next" title="MVVM+ReactiveCocoa简单介绍">
+                <i class="fa fa-chevron-left"></i> MVVM+ReactiveCocoa简单介绍
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/02/23/MVVM+ReactiveCocoa/" rel="prev" title="MVVM+ReactiveCocoa简单介绍">
-                MVVM+ReactiveCocoa简单介绍 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -383,10 +459,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/01/17/互联网？新一轮的机遇？/"
-     data-title="互联网？新一轮的机遇？"
+        <div class="ds-share flat" data-thread-key="2016/02/25/Quartz2D详解/"
+     data-title="Quartz2D详解"
      data-content=""
-     data-url="http://www.cocoadc.com/2016/01/17/互联网？新一轮的机遇？/">
+     data-url="http://www.cocoadc.com/2016/02/25/Quartz2D详解/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -413,8 +489,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/17/互联网？新一轮的机遇？/"
-           data-title="互联网？新一轮的机遇？" data-url="http://www.cocoadc.com/2016/01/17/互联网？新一轮的机遇？/">
+      <div class="ds-thread" data-thread-key="2016/02/25/Quartz2D详解/"
+           data-title="Quartz2D详解" data-url="http://www.cocoadc.com/2016/02/25/Quartz2D详解/">
       </div>
     
   </div>
@@ -538,7 +614,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u8BDE_u751F"><span class="nav-number">1.</span> <span class="nav-text">移动互联网的诞生</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u4ECE_u4E1A_u4EBA_u5458"><span class="nav-number">2.</span> <span class="nav-text">移动互联网的从业人员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u79FB_u52A8_u4E92_u8054_u7F51_u7684_u76C8_u5229_u6A21_u5F0F"><span class="nav-number">3.</span> <span class="nav-text">移动互联网的盈利模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u673A_u9047_u548C_u6311_u6218"><span class="nav-number">4.</span> <span class="nav-text">机遇和挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u9898_u5916_u8BDD"><span class="nav-number">5.</span> <span class="nav-text">题外话</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4EC0_u4E48_u662FQuartz2D_3F"><span class="nav-number">1.</span> <span class="nav-text">什么是Quartz2D?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B66_u4E60Quartz2D_u7684_u4EF7_u503C_u5728_u54EA_u91CC"><span class="nav-number">1.1.</span> <span class="nav-text">学习Quartz2D的价值在哪里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4EC0_u4E48_u662F_u56FE_u5F62_u4E0A_u4E0B_u6587"><span class="nav-number">1.2.</span> <span class="nav-text">什么是图形上下文</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drawRect_3A"><span class="nav-number">2.</span> <span class="nav-text">drawRect:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#drawRect_u5982_u4F55_u7ED8_u56FE_u5230View_u4E0A"><span class="nav-number">2.1.</span> <span class="nav-text">drawRect如何绘图到View上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#drawRect_3A_u65B9_u6CD5_u5982_u4F55_u8C03_u7528_u7684"><span class="nav-number">2.2.</span> <span class="nav-text">drawRect:方法如何调用的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u81EA_u5B9A_u4E49View_u7684_u6B65_u9AA4"><span class="nav-number">3.</span> <span class="nav-text">自定义View的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u4E0B_u9762_u6211_u5C31_u4ECB_u7ECD_u5982_u4F55_u4F7F_u7528Quartz2D_u753B_u5404_u79CD_u56FE_u5F62_u3002"><span class="nav-number">3.0.1.</span> <span class="nav-text">下面我就介绍如何使用Quartz2D画各种图形。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5B9E_u73B0_u4EE3_u7801"><span class="nav-number">4.</span> <span class="nav-text">实现代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5199_u6587_u5B57"><span class="nav-number">4.1.</span> <span class="nav-text">写文字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u753B_u5706"><span class="nav-number">4.2.</span> <span class="nav-text">画圆</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
