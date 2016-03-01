@@ -430,13 +430,21 @@
 <p>三次曲线函数</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CGContextMoveToPoint(context, <span class="number">200</span>, <span class="number">300</span>);<span class="comment">//设置Path的起点  </span></span><br><span class="line">CGContextAddCurveToPoint(context,<span class="number">250</span>, <span class="number">280</span>, <span class="number">250</span>, <span class="number">400</span>, <span class="number">280</span>, <span class="number">300</span>);<span class="comment">//设置贝塞尔曲线的控制点坐标(2个)和终点坐标</span></span><br><span class="line">CGContextStrokePath(context);</span><br></pre></td></tr></table></figure>
 <h3 id="u753B_u56FE_u7247"><a href="#u753B_u56FE_u7247" class="headerlink" title="画图片"></a>画图片</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIImage *image = [UIImage imageNamed:@<span class="string">"apple.jpg"</span>];</span><br><span class="line">[image drawInRect:CGRectMake(<span class="number">60</span>, <span class="number">340</span>, <span class="number">20</span>, <span class="number">20</span>)];<span class="comment">//在坐标中画出图片</span></span><br></pre></td></tr></table></figure>
+<h2 id="u56FE_u5F62_u4E0A_u4E0B_u6587_u6808_u7684_u64CD_u4F5C"><a href="#u56FE_u5F62_u4E0A_u4E0B_u6587_u6808_u7684_u64CD_u4F5C" class="headerlink" title="图形上下文栈的操作"></a>图形上下文栈的操作</h2><h3 id="u5C06_u5F53_u524D_u7684_u4E0A_u4E0B_u6587copy_u4E00_u4EFD_2C_u4FDD_u5B58_u5230_u6808_u9876_28_u90A3_u4E2A_u6808_u53EB_u505A_u201D_u56FE_u5F62_u4E0A_u4E0B_u6587_u6808_u201D_29"><a href="#u5C06_u5F53_u524D_u7684_u4E0A_u4E0B_u6587copy_u4E00_u4EFD_2C_u4FDD_u5B58_u5230_u6808_u9876_28_u90A3_u4E2A_u6808_u53EB_u505A_u201D_u56FE_u5F62_u4E0A_u4E0B_u6587_u6808_u201D_29" class="headerlink" title="将当前的上下文copy一份,保存到栈顶(那个栈叫做”图形上下文栈”)"></a>将当前的上下文copy一份,保存到栈顶(那个栈叫做”图形上下文栈”)</h3><p>void CGContextSaveGState(CGContextRef c)</p>
+<h3 id="u5C06_u6808_u9876_u7684_u4E0A_u4E0B_u6587_u51FA_u6808_2C_u66FF_u6362_u6389_u5F53_u524D_u7684_u4E0A_u4E0B_u6587"><a href="#u5C06_u6808_u9876_u7684_u4E0A_u4E0B_u6587_u51FA_u6808_2C_u66FF_u6362_u6389_u5F53_u524D_u7684_u4E0A_u4E0B_u6587" class="headerlink" title="将栈顶的上下文出栈,替换掉当前的上下文"></a>将栈顶的上下文出栈,替换掉当前的上下文</h3><p>void CGContextRestoreGState(CGContextRef c)</p>
+<h2 id="u77E9_u9635_u64CD_u4F5C"><a href="#u77E9_u9635_u64CD_u4F5C" class="headerlink" title="矩阵操作"></a>矩阵操作</h2><blockquote>
+<p>利用矩阵操作，能让绘制到上下文中的所有路径一起发生变化</p>
+</blockquote>
+<h3 id="u7F29_u653E"><a href="#u7F29_u653E" class="headerlink" title="缩放"></a>缩放</h3><p>void CGContextScaleCTM(CGContextRef c, CGFloat sx, CGFloat sy)</p>
+<h3 id="u65CB_u8F6C"><a href="#u65CB_u8F6C" class="headerlink" title="旋转"></a>旋转</h3><p>void CGContextRotateCTM(CGContextRef c, CGFloat angle)</p>
+<h3 id="u5E73_u79FB"><a href="#u5E73_u79FB" class="headerlink" title="平移"></a>平移</h3><p>void CGContextTranslateCTM(CGContextRef c, CGFloat tx, CGFloat ty)</p>
 <hr>
-<p>=========================未完待续========================</p>
 <p>想了解更多内容，可以点击以下链接:</p>
 <blockquote>
 <p><a href="http://blog.csdn.net/rhljiayou/article/details/9919713" target="_blank" rel="external">http://blog.csdn.net/rhljiayou/article/details/9919713</a></p>
 <p><a href="http://www.jianshu.com/p/0e785269dccc" target="_blank" rel="external">http://www.jianshu.com/p/0e785269dccc</a></p>
 </blockquote>
+<hr>
 
           
         
